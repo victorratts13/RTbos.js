@@ -1,12 +1,16 @@
 /*
 Desenvolvido e mantido por: Victor Ratts
 github: https://github.com/victorratts13/RTbos
+versão: beta (0.0.1) Briba
 */
 const request = require('request');
 const socket = require('socket.io');
-const apiKey = 'You_api_key';
-const secret = 'Your_secret';
+const apiKey = 'B7DKNHKS-5CT933TP-Z0495S78-D27NUN0W';
+const secret = '872515d774f243ffc36c36306c9b0bb64c986fbe3550d457998f01690b4a47b1a3d9faaa907e08acf3fa450a578d4abb54c430067bbabadd8305c7f1f524387e';
 const Poloniex = require('poloniex-api-node');
+const poloniex = new Poloniex(apiKey, secret, { nonce: () => new Date().getTime() * 1000 }, {socketTimeout: 60000});
+const RSI = require('technicalindicators').RSI;
+
 
 
 
@@ -190,6 +194,8 @@ per = `period=${period.M5}`;
 //mensagem de inicio do sistema
 console.log('\033c \x1b[41m Iniciando RTbos Versão: '+version+' - '+codg+'\x1b[0m \n \n ' )
 
+
+
 //----------------------------------
 }
 
@@ -275,7 +281,7 @@ function getUri(){
                     var dataCh = body
                     if(dataCh){
                         console.log('\x1b[32m dados Graficos Obtidos para o time de: \x1b[36m'+per+' \x1b[37m segundos')
-                      // console.log(dataCh)
+                      //console.log(dataCh)
                     }else{
                         console.log('algum erro ocorreu =>' + error)
                 }
@@ -286,7 +292,7 @@ function getUri(){
             Os dados abaixo desta linha executam funções como ordens de compra e venda.
             certifique-se de ter add sua apiKey e secret.
         */
-        let poloniex = new Poloniex(apiKey, secret, { nonce: () => unix*1000 });
+        
         poloniex.on('open', () => {
         console.log(` WebSocket conectado com sucesso \n preparando negociações...`);
         });
@@ -300,13 +306,123 @@ function getUri(){
         });
         poloniex.openWebSocket();
 }
+    poloniex.returnBalances(function (err, balances) {
+        if (err) {
+          console.log(err.message);
+        } else {
+            console.log('obtendo saldos')
+           // console.log(balances); habilite para verificar todos os saldos
+            console.log('\x1b[45m \x1b[37m Seu saldo em BTC é: '+balances.BTC+'\x1b[0m '); //selecione balances.<coin> para mostrar o valor
+        }
+    });
+    console.log('\x1b[33m obtendo dados graficos')
+setInterval(function(){ 
+start = parseInt(new Date().getTime() / 1000) - 4100
+end = parseInt(new Date().getTime() / 1000)
+poloniex.returnChartData('USDT_BTC', '300', start, end, (err, data) => {
+    var dataCh = data
+    if(dataCh){
+        console.log('\033c  \x1b[37m  \x1b[45m Bem vindo Ao RTbos \x1b[0m \n \n');
+        console.log('\n Analizando estratégias... \n #---------------------------------');
+        console.log(
+            `#--------------------------------------------------#\n|\x1b[32m dados Graficos Obtidos para o time de: \x1b[36m'${per}' \x1b[37m segundos \n| URI do par: ${cur}\n#--------------------------------------------------#\n`+
+            `#--------------------------------------------------#\n|Valor Inicial do ativo U$ -> ${dataCh[0].high}\n#--------------------------------------------------#\n`+
+            `#--------------------------------------------------#\n|Data completa: ${new Date()}\n#--------------------------------------------------#`
+        )
+            
+     //console.log('\x1b[32m dados Graficos Obtidos para o time de: \x1b[36m'+per+' \x1b[37m segundos \n URI do par: '+ cur)
+     //   console.log('Valor Inicial do ativo -> '+dataCh[0].high+ '\n #-------------------------------')
+        //console.log(dataCh)
+        //Criando estrategia RSI 
+        var inputRSI = {
+            values : [
+                dataCh[0].high,
+                dataCh[1].high,
+                dataCh[2].high,
+                dataCh[3].high,
+                dataCh[4].high,
+                dataCh[5].high,
+                dataCh[6].high,
+                dataCh[7].high,
+                dataCh[8].high,
+                dataCh[9].high,
+                dataCh[10].high,
+                dataCh[11].high,
+                dataCh[12].high,
+            /*  dataCh[13].high,
+                dataCh[14].high,
+                dataCh[15].high,
+                dataCh[16].high,
+                dataCh[17].high,
+                dataCh[18].high,
+                dataCh[19].high,
+                */
+
+            ],
+            period : 5
+          }
+          //calculando rsi baseado no mercado (periodo 5 = 300 segundos)
+          var resultRSI = RSI.calculate(inputRSI)
+            console.log('RSI '+resultRSI[7] + '% - indices calculados: \x1b[34m')
+            console.log(new RSI.calculate(inputRSI) + ' - ' + new Date().getTime() + '\x1b[0m')
+            console.log('\n\x1b[37m Analizando Mercado para executar ordens, Aguarde...')
+            console.log('Aguardando melhor momento para compra/venda, aguarde....');
+
+          /*
+             formula de calculo RSI:
+             se a % de valor estiver > 70%, é executado uma ordem de venda
+             se a % de valor estiver < 30% é executado uma ordem de compra
+
+             se o valor % estiver abaixo de 70 e acima de 50 a mais de 20min, executa uma venda
+             se o valor % estiver acima de 30 e abaixo de 50 a mais de 20min, executa uma compra
+
+          */
+                 
+
+          if(resultRSI[7] > 70){
+              //executa ordem de venda
+              poloniex.sell('USDT_BTC', '0.01', '0.00011', function(error, data){
+                  if(error){
+                      console.log(error)
+                  }else{
+                      console.log('Odem de Venda executada:')
+                      console.log(JSON.stringify(data))
+                  }
+              })
+          };
+          //executa ordem de compra
+          if(resultRSI[7] < 30){
+              poloniex.buy('USDT_BTC', '0.01', '0.40', function(error, data){
+                  if(error){
+                      console.log(error)
+                  }else{
+                        console.log('Odem de Compra executada:')
+                      console.log(JSON.stringify(data))
+                  }
+              })
+          }
+
+    }else{
+        console.log('algum erro ocorreu =>' + err)
+} 
+console.log('#--------------------------------- \x1b[37m')
+
+})
 
 
-setTimeout(function() { 
-    
-    console.log('\033c \x1b[37m  \x1b[45m Bem vindo Ao RTbos \x1b[0m \n \n');
-    console.log('\n Analizando estratégias... \n #---------------------------------');
- }, 10000);
+
+}, 1000)
+ 
+
+ //estrategia utilizada (RSI)
+
+
+ var inputRSI = {
+    values : [],
+    period : 5
+  };
+  
+  RSI.calculate(inputRSI)
 
 //exportando funções
 
