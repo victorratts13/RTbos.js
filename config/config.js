@@ -4,8 +4,8 @@ github: https://github.com/victorratts13/RTbos
 */
 const request = require('request');
 const socket = require('socket.io');
-const apiKey = 'B7DKNHKS-5CT933TP-Z0495S78-D27NUN0W';
-const secret = '872515d774f243ffc36c36306c9b0bb64c986fbe3550d457998f01690b4a47b1a3d9faaa907e08acf3fa450a578d4abb54c430067bbabadd8305c7f1f524387e';
+const apiKey = 'You_api_key';
+const secret = 'Your_secret';
 const Poloniex = require('poloniex-api-node');
 
 
