@@ -5,8 +5,8 @@ versão: beta (0.0.1) Briba
 */
 const request = require('request');
 const socket = require('socket.io');
-const apiKey = '5TL66NTL-9QNIZ8Q3-NJGKHW5J-IB4JX39S';
-const secret = '1a51cb60a925e862821d6178bff02b6664a90608bee5e706c61db5cbaa59d5d998da7bc81743b400144bb6fe910478fc193fa408e35dd8a57f85f281a7332bda';
+const apiKey = 'Api_secret';
+const secret = 'Api_key';
 const Poloniex = require('poloniex-api-node');
 const poloniex = new Poloniex(apiKey, secret, { nonce: () => new Date().getTime() * 1000 }, {socketTimeout: 60000});
 const RSI = require('technicalindicators').RSI;
@@ -319,7 +319,7 @@ function getUri(){
 setInterval(function(){ 
 start = parseInt(new Date().getTime() / 1000) - 6250
 end = parseInt(new Date().getTime() / 1000)
-poloniex.returnChartData('BTC_LBC', '300', start, end, (err, data) => {
+poloniex.returnChartData('USDT_BTC', '300', start, end, (err, data) => {
     var dataCh = data
     if(dataCh){
         console.log('\033c  \x1b[37m  \x1b[45m Bem vindo Ao RTbos \x1b[0m \n \n');
@@ -381,17 +381,22 @@ poloniex.returnChartData('BTC_LBC', '300', start, end, (err, data) => {
             if(err){
                 console.log(err)
             }else{
+
+                price = dataCh[12].high;
                 console.log(balance.BTC)
-         
-            price = dataCh[12].high;
-            console.log(resultRSI[7])
-         
-          
+                console.log(balance.USDT)
+                console.log(resultRSI[7])
+                console.log(price)
+            
            if(resultRSI[7] > 70){
-              poloniex.sell('BTC_LBC', price, (balance.LBC * price), 1, 1, 0, (err, sell) => {console.log(sell+ 'aguardando Proxima ordem')})
+              poloniex.sell('USDT_BTC', price, ( price * balance.BTC ), 1, 1, 0, (err, sell) => {console.log(JSON.stringify(sell)+ '\n aguardando Proxima ordem')})
+          }else{
+              console.log(`Aguardando Momento para Venda`)  
           }if(resultRSI[7] < 30){
-              poloniex.buy('BTC_LBC', price, (balance.BTC / price), 1, 1, 0, (err, buy) => {console.log(buy)})
-          }else{console.log(`erro em gerarar a ordem`)}
+              poloniex.buy('USDT_BTC', price, ( balance.USDT / price ), 1, 1, 0, (err, buy) => {console.log(buy)})
+          }else{
+              console.log(`Aguardando Momento para Compra`)
+            }
         }
     })
 
@@ -406,7 +411,7 @@ console.log('#--------------------------------- \x1b[37m')
 
 
 
-}, 1000)
+}, 10000)
  
 
  //estrategia utilizada (RSI)
