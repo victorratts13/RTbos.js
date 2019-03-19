@@ -5,8 +5,8 @@ versão: beta (0.0.1) Briba
 */
 const request = require('request');
 const socket = require('socket.io');
-const apiKey = 'B7DKNHKS-5CT933TP-Z0495S78-D27NUN0W';
-const secret = '872515d774f243ffc36c36306c9b0bb64c986fbe3550d457998f01690b4a47b1a3d9faaa907e08acf3fa450a578d4abb54c430067bbabadd8305c7f1f524387e';
+const apiKey = '5TL66NTL-9QNIZ8Q3-NJGKHW5J-IB4JX39S';
+const secret = '1a51cb60a925e862821d6178bff02b6664a90608bee5e706c61db5cbaa59d5d998da7bc81743b400144bb6fe910478fc193fa408e35dd8a57f85f281a7332bda';
 const Poloniex = require('poloniex-api-node');
 const poloniex = new Poloniex(apiKey, secret, { nonce: () => new Date().getTime() * 1000 }, {socketTimeout: 60000});
 const RSI = require('technicalindicators').RSI;
@@ -317,9 +317,9 @@ function getUri(){
     });
     console.log('\x1b[33m obtendo dados graficos')
 setInterval(function(){ 
-start = parseInt(new Date().getTime() / 1000) - 4100
+start = parseInt(new Date().getTime() / 1000) - 6250
 end = parseInt(new Date().getTime() / 1000)
-poloniex.returnChartData('USDT_BTC', '300', start, end, (err, data) => {
+poloniex.returnChartData('BTC_LBC', '300', start, end, (err, data) => {
     var dataCh = data
     if(dataCh){
         console.log('\033c  \x1b[37m  \x1b[45m Bem vindo Ao RTbos \x1b[0m \n \n');
@@ -349,7 +349,7 @@ poloniex.returnChartData('USDT_BTC', '300', start, end, (err, data) => {
                 dataCh[10].high,
                 dataCh[11].high,
                 dataCh[12].high,
-            /*  dataCh[13].high,
+            /*    dataCh[13].high,
                 dataCh[14].high,
                 dataCh[15].high,
                 dataCh[16].high,
@@ -376,31 +376,26 @@ poloniex.returnChartData('USDT_BTC', '300', start, end, (err, data) => {
              se o valor % estiver abaixo de 70 e acima de 50 a mais de 20min, executa uma venda
              se o valor % estiver acima de 30 e abaixo de 50 a mais de 20min, executa uma compra
 
-          */
-                 
+          */   
+       poloniex.returnBalances((err, balance) => {
+            if(err){
+                console.log(err)
+            }else{
+                console.log(balance.BTC)
+         
+            price = dataCh[12].high;
+            console.log(resultRSI[7])
+         
+          
+           if(resultRSI[7] > 70){
+              poloniex.sell('BTC_LBC', price, (balance.LBC * price), 1, 1, 0, (err, sell) => {console.log(sell+ 'aguardando Proxima ordem')})
+          }if(resultRSI[7] < 30){
+              poloniex.buy('BTC_LBC', price, (balance.BTC / price), 1, 1, 0, (err, buy) => {console.log(buy)})
+          }else{console.log(`erro em gerarar a ordem`)}
+        }
+    })
 
-          if(resultRSI[7] > 70){
-              //executa ordem de venda
-              poloniex.sell('USDT_BTC', '0.01', '0.00011', function(error, data){
-                  if(error){
-                      console.log(error)
-                  }else{
-                      console.log('Odem de Venda executada:')
-                      console.log(JSON.stringify(data))
-                  }
-              })
-          };
-          //executa ordem de compra
-          if(resultRSI[7] < 30){
-              poloniex.buy('USDT_BTC', '0.01', '0.40', function(error, data){
-                  if(error){
-                      console.log(error)
-                  }else{
-                        console.log('Odem de Compra executada:')
-                      console.log(JSON.stringify(data))
-                  }
-              })
-          }
+          
 
     }else{
         console.log('algum erro ocorreu =>' + err)
