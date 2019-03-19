@@ -14,3 +14,17 @@ Real trade Bot Open Source
 - "socket.io": "^2.2.0",
 - "technicalindicators": "^1.1.13"
 
+## instalação
+
+```sh
+~$ git clone https://github.com/victorratts13/RTbos.git
+```
+```sh
+~$ npm install
+```
+```sh
+~$ npm test
+```
+```sh
+~$ npm start
+```
