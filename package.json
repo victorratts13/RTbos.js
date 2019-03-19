@@ -4,7 +4,7 @@
   "description": "Real Trade Bot Open Souuce (RTbos) javascript",
   "main": "RTbos.js",
   "scripts": {
-    "test": "RTbos.test.js",
+    "test": "node RTbos.test.js",
     "start": "node RTbos.js"
   },
   "repository": {
