@@ -387,18 +387,17 @@ poloniex.returnChartData('BTC_CLAM', '300', start, end, (err, data) => {
                 console.log('Saldo em CLAM -> '+balance.CLAM)
                 console.log(resultRSI[7])
                 console.log(price)
-                var amount = balance.BTC / price;
-                var sell = amount * price;
-                var buy = price * amount;
+                var buy = balance.BTC / price;
+                var sell = price * balance.CLAM / price;
                 console.log('total sell -> '+ parseFloat(sell.toFixed(8))+ '\n #-----------------------------------')
                 console.log('total buy --> '+ parseFloat(buy.toFixed(8)) + '\n #-----------------------------------' )
             
            if(resultRSI[7] > 70){
-              poloniex.sell('BTC_CLAM', price, (sell / price) , 1, 1, 0, (err, sell) => {console.log(JSON.stringify(sell)+ '\n aguardando Proxima ordem')})
+              poloniex.sell('BTC_CLAM', price, sell , 1, 1, 0, (err, sell) => {console.log(JSON.stringify(sell)+ '\n aguardando Proxima ordem')})
           }else{
               console.log(`Aguardando Momento para Venda`)  
           }if(resultRSI[7] < 30){
-              poloniex.buy('BTC_CLAM', price, ( buy * price), 1, 1, 0, (err, buy) => {console.log(buy)})
+              poloniex.buy('BTC_CLAM', price, buy, 0, 1, 0, (err, buy) => {console.log(buy)})
           }else{
               console.log(`Aguardando Momento para Compra`)
             }
