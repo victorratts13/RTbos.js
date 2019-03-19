@@ -16,15 +16,26 @@ Real trade Bot Open Source
 
 ## instalação
 
+Clone o projeto
 ```sh
 ~$ git clone https://github.com/victorratts13/RTbos.git
 ```
+execute a instalação
 ```sh
 ~$ npm install
 ```
+
+## configuração
+
+edite o arquivo *config/config.js*
+adicione "your_api_key" & "your_secret"
+
+## executando
+inicie um test para verificar se está tudo ok
 ```sh
 ~$ npm test
 ```
+inicie o bot
 ```sh
 ~$ npm start
 ```
