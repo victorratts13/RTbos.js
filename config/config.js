@@ -319,14 +319,14 @@ function getUri(){
 setInterval(function(){ 
 start = parseInt(new Date().getTime() / 1000) - 6250
 end = parseInt(new Date().getTime() / 1000)
-poloniex.returnChartData('USDT_BTC', '300', start, end, (err, data) => {
+poloniex.returnChartData('BTC_CLAM', '300', start, end, (err, data) => {
     var dataCh = data
     if(dataCh){
         console.log('\033c  \x1b[37m  \x1b[45m Bem vindo Ao RTbos \x1b[0m \n \n');
         console.log('\n Analizando estratégias... \n #---------------------------------');
         console.log(
             `#--------------------------------------------------#\n|\x1b[32m dados Graficos Obtidos para o time de: \x1b[36m'${per}' \x1b[37m segundos \n| URI do par: ${cur}\n#--------------------------------------------------#\n`+
-            `#--------------------------------------------------#\n|Valor Inicial do ativo U$ -> ${dataCh[0].high}\n#--------------------------------------------------#\n`+
+            `#--------------------------------------------------#\n|Valor Inicial do ativo BTC -> ${dataCh[0].high}\n#--------------------------------------------------#\n`+
             `#--------------------------------------------------#\n|Data completa: ${new Date()}\n#--------------------------------------------------#`
         )
             
@@ -382,18 +382,18 @@ poloniex.returnChartData('USDT_BTC', '300', start, end, (err, data) => {
                 console.log(err)
             }else{
 
-                price = dataCh[12].high;
-                console.log(balance.BTC)
-                console.log(balance.USDT)
+                price = dataCh[0].high;
+                console.log('salso em BTC -> '+balance.BTC)
+                console.log('Saldo em CLAM -> '+balance.CLAM)
                 console.log(resultRSI[7])
                 console.log(price)
             
            if(resultRSI[7] > 70){
-              poloniex.sell('USDT_BTC', price, ( price * balance.BTC ), 1, 1, 0, (err, sell) => {console.log(JSON.stringify(sell)+ '\n aguardando Proxima ordem')})
+              poloniex.sell('BTC_CLAM', price, (balance.CLAM * price ) , 1, 1, 0, (err, sell) => {console.log(JSON.stringify(sell)+ '\n aguardando Proxima ordem')})
           }else{
               console.log(`Aguardando Momento para Venda`)  
           }if(resultRSI[7] < 30){
-              poloniex.buy('USDT_BTC', price, ( balance.USDT / price ), 1, 1, 0, (err, buy) => {console.log(buy)})
+              poloniex.buy('BTC_CLAM', price, ( balance.CLAM / price ), 1, 1, 0, (err, buy) => {console.log(buy)})
           }else{
               console.log(`Aguardando Momento para Compra`)
             }
