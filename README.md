@@ -28,8 +28,10 @@ execute a instalação
 ## configuração
 
 edite o arquivo *config/config.js*
-adicione "your_api_key" & "your_secret"
-
+```sh
+const apiKey = 'Api_secret';
+const secret = 'Api_key';
+```
 ## executando
 inicie um test para verificar se está tudo ok
 ```sh
