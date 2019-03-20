@@ -41,3 +41,11 @@ inicie o bot
 ```sh
 ~$ npm start
 ```
+
+### Ajude o projeto a se desenvolver
+```sh
+BTC: 1VRfQsPGgYJxhAXFyaoaPkcaAhEYECW7W
+DOGE: DGqBZ7p9Ncupxnwo6kZ65cc1bQdHTfqhZY
+ETH: 0xe752591b692d0d9d9e047ac186eec9e94de5773a
+LTC: LgJViiNyP8j2ffAVSGPDB1K7oryefg4KAJ
+```
