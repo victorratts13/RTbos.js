@@ -19,15 +19,40 @@ const reloadTime = '10000';//tempo para recarregar os dados (padrão 10 segundos
 setInterval(() => {
 
 	//configurações gerais
-const par = 'BTC_LTC'; //ultilice o formato PAIR_PAIR ex. BTC_LTC, BTC_DOGE, USDT_BTC
+const par = 'BTC_LTC'; //ultilise o formato PAIR_PAIR ex. BTC_LTC, BTC_DOGE, USDT_BTC
 const uTime = parseInt(new Date().getTime() / 1000);//TimeUnix format
 const sub = 3750;//subtração do startTime
 const period = 300; //valor do periodo dos candels em segundos (minimo 300 segundos ou 5 minutos)
 const start = uTime - sub;//inicio do candle
 const end = uTime;//fim do candle
 
-const invest = ''; //valor a ser investido, caso esteja vazio o valor será seu saldo total - minimo 0.0001
+const invest = '0.0001'; //valor a ser investido, caso esteja vazio o valor será seu saldo total - minimo 0.0001
 const lucro = ''; //porcentagem de lucro, caso esteja vazio o lucro esperado será maximo
+
+if(invest == false){
+	console.log(
+		'\033c \x1b[4m \x1b[33m Bem Vindo ao RTbos 1.0.1 -> BRIBA \x1b[0m \n' +
+		'executando bot usando Valor do balanço total \n #-------------------------------------------- \n'+
+		'caso não queira usar seu saldo total, pare o BOT e edite a variavel invest (Line: 29)\n'+
+		'\n Analizando estratégias... \n #---------------------------------\n'+
+		 `#--------------------------------------------------#\n|\x1b[32m dados Graficos Obtidos para o time de: \x1b[36m'${period}' \x1b[37m segundos \n| URI do par: ${par}\n#--------------------------------------------------#\n`+
+         `#--------------------------------------------------#\n|Data completa: ${new Date()}\n#--------------------------------------------------#`+
+         '\ncalculando Indicadores'
+		)
+}else{
+	console.log(
+		'\033c \x1b[4m \x1b[33m Bem Vindo ao RTbos 1.0.1 -> BRIBA \x1b[0m \n' +
+		'executando bot usando Valor: '+invest+' do saldo total \n #-------------------------------------------- \n'+
+		'caso queira usar seu saldo total, pare o BOT e edite a variavel invest (Line: 29)\n'+
+		'\n Analizando estratégias... \n #---------------------------------'+
+		 `#--------------------------------------------------#\n|\x1b[32m dados Graficos Obtidos para o time de: \x1b[36m'${period}' \x1b[37m segundos \n| URI do par: ${par}\n#--------------------------------------------------#\n`+
+         `#--------------------------------------------------#\n|Data completa: ${new Date()}\n#--------------------------------------------------#`+
+         '\ncalculando Indicadores'
+	)
+
+}
+									//interface do console
+				                    
 
 		poloniex.returnCurrencies((err, cur) => {
 			if(err){
@@ -94,6 +119,7 @@ const lucro = ''; //porcentagem de lucro, caso esteja vazio o lucro esperado ser
 				                    */   
 				                    //executando ordem de venda
 				                    if(resultRSI[7] > 70){
+				                    
 				                    	poloniex.sell(par, price, sell, 1, 1, 0, (err, sell) => {
 				                    		console.log(JSON.stringify(sell))
 				                    		console.log('venda no valor de: '+ price +'\n aguardando proxima ordem....')
@@ -163,7 +189,8 @@ const lucro = ''; //porcentagem de lucro, caso esteja vazio o lucro esperado ser
 				                        se o valor % estiver abaixo de 70 e acima de 50 a mais de 20min, executa uma venda
 				                        se o valor % estiver acima de 30 e abaixo de 50 a mais de 20min, executa uma compra
 
-				                    */   
+				                    */
+				                    
 				                    //executando ordem de venda
 				                    if(resultRSI[7] > 70){
 				                    	poloniex.sell(par, price, sell, 1, 1, 0, (err, sell) => {
@@ -182,6 +209,8 @@ const lucro = ''; //porcentagem de lucro, caso esteja vazio o lucro esperado ser
 				                    }else{
 				                    	console.log('aguardando oportunidade para compra...')
 				                    }
+
+
 								}
 							});
 						}
