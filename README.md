@@ -32,6 +32,13 @@ edite o arquivo *config/config.js*
 const apiKey = 'Api_secret';
 const secret = 'Api_key';
 ```
+ > - versão briba:1.0.
+  >- **NOTA**: a versão briba executa apenas ordens em um par de moedas, 
+ vc pode selecionar o par desejado em:
+```js
+const par = 'BTC_LTC'; //utilise o formato PAIR_PAIR ex. BTC_LTC, BTC_DOGE, USDT_BTC
+```
+ > - Edite, `balances` para selecionar os balanços que quer ultilizar para negociação: ex - balances.LTC, balances.ETH, balances.CLAM...
 ## executando
 inicie um test para verificar se está tudo ok
 ```sh
