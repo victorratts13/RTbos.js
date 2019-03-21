@@ -5,8 +5,8 @@ versão: beta (0.0.1) Briba
 */
 const request = require('request');
 const socket = require('socket.io');
-const apiKey = '5JK50VAM-1QDZPLXD-ULRJ5CI6-AA9ZPYWL';
-const secret = 'fdd5a1f047ecdd1424b2b5160ad17a373696bf8db48e6255165749d9d23f034c5df825c6d180ab6a58112d3d5e00db6dd5432d76228517a66a0d54033b6a842b';
+const apiKey = 'API_key';
+const secret = 'API_secret';
 const Poloniex = require('poloniex-api-node');
 const poloniex = new Poloniex(apiKey, secret, { nonce: () => new Date().getTime() * 1001 }, {socketTimeout: 60000});
 const RSI = require('technicalindicators').RSI;
