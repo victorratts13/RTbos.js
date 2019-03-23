@@ -11,22 +11,22 @@ const Poloniex = require('poloniex-api-node');
 //construtor POLONIEX api
 const poloniex = new Poloniex(apiKey, secret, { nonce: () => new Date().getTime() * 1001 }, {socketTimeout: 60000});
 //importação de indicadores
-const RSI = require('technicalindicators').RSI;
+const RSI = require('technicalindicators').RSI; //os indicadores usados
 const SMA = require('technicalindicators').SMA;
 const EMA = require('technicalindicators').EMA;
-const reloadTime = '300000';//tempo para recarregar os dados (padrão 300 segundos ou 300.000 milisegundos = 5min)
+const reloadTime = '10000';//tempo para recarregar os dados (padrão 300 segundos ou 300.000 milisegundos = 5min) 
 
 setInterval(() => {
 
     //configurações gerais
-const par = 'BTC_LTC'; //ultilise o formato PAIR_PAIR ex. BTC_LTC, BTC_DOGE, USDT_BTC
+const par = 'BTC_CLAM'; //ultilise o formato PAIR_PAIR ex. BTC_LTC, BTC_DOGE, USDT_BTC
 const uTime = parseInt(new Date().getTime() / 1000);//TimeUnix format
-const sub = 3750;//subtração do startTime
+const sub = 4550;//subtração do startTime
 const period = 300; //valor do periodo dos candels em segundos (minimo 300 segundos ou 5 minutos)
 const start = uTime - sub;//inicio do candle
 const end = uTime;//fim do candle
 
-const invest = '0.0001'; //valor a ser investido, caso esteja vazio o valor será seu saldo total - minimo 0.0001
+const invest = ''; //valor a ser investido, caso esteja vazio o valor será seu saldo total - minimo 0.0001
 const lucro = ''; //porcentagem de lucro, caso esteja vazio o lucro esperado será maximo
 
 if(invest == false){
@@ -75,6 +75,7 @@ if(invest == false){
                                     //Criando estrategia RSI 
                                     var inputRSI = {
                                         values : [
+                                        //aqui é onde calcula o RSI para executar a compra/venda
                                             dataCh[0].high,
                                             dataCh[1].high,
                                             dataCh[2].high,
@@ -103,10 +104,14 @@ if(invest == false){
                                     }
                                     //calculando rsi baseado no mercado (periodo 5 = 300 segundos)
                                     var resultRSI = RSI.calculate(inputRSI)
-                                    var price = dataCh[12].high;
+                                    var price = dataCh[0].high;
                                     var buy = balances.BTC / price;
-                                    var sell = price * balances.LTC / price;
+                                    var sell = price * balances.CLAM / price;
                                     console.log(resultRSI);
+
+                                    console.log('Balanço BTC -> '+ balances.BTC + '\n#--------------------------------')
+                                    console.log('Balanço CLAM -> '+ balances.CLAM + '\n#--------------------------------')
+                                    console.log('Preço BTC -> '+ price + '\n#--------------------------------')
 
                                     /*
                                         formula de calculo RSI:
@@ -118,19 +123,19 @@ if(invest == false){
 
                                     */   
                                     //executando ordem de venda
-                                    if(resultRSI[7] > 70){
+                                    if(resultRSI[7] > 70){//se for maior que 70% vende
                                     
                                         poloniex.sell(par, price, sell, 1, 1, 0, (err, sell) => {
                                             console.log(JSON.stringify(sell))
                                             console.log('executando venda')
-                                            console.log('venda no valor de: '+ price +'\n aguardando proxima ordem....')
+                                            console.log('venda no valor de: '+ price +' BTC\n aguardando proxima ordem....')
                                         })
                                     }else{
                                         console.log('aguardando oportunidade para venda... \n#--------------------------')
                                     }
                                     //executando ordem de compra
-                                    if(resultRSI[7] < 30){
-                                        poloniex.buy(par, price, buy, 1, 1, 0, (err, buy) => {
+                                    if(resultRSI[7] < 30){//se for menor que 30% compra
+                                        poloniex.buy(par, price, buy, 1, 0, 0, (err, buy) => {
                                             console.log(JSON.stringify(buy))
                                             console.log('executando compra:')
                                             console.log('compra no valor de: '+ price +'\n aguardando proxima ordem....')
@@ -178,10 +183,14 @@ if(invest == false){
                                     }
                                     //calculando rsi baseado no mercado (periodo 5 = 300 segundos)
                                     var resultRSI = RSI.calculate(inputRSI)
-                                    var price = dataCh[12].high;
+                                    var price = dataCh[0].high;
                                     var buy = invest / price;
-                                    var sell = price * balances.LTC / price;
+                                    var sell = price * balances.CLAM / price;
                                     console.log(resultRSI);
+
+                                    console.log('Balanço BTC -> '+ balances.BTC + '\n#--------------------------------')
+                                    console.log('Balanço CLAM -> '+ balances.CLAM + '\n#--------------------------------')
+                                    console.log('Preço BTC -> '+ price + '\n#--------------------------------')
 
                                     /*
                                         formula de calculo RSI:
