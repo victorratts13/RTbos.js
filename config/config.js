@@ -3,10 +3,11 @@ Desenvolvido e mantido por: Victor Ratts
 github: https://github.com/victorratts13/RTbos
 versão: estavel (1.0.1) Briba
 */
+const API = require('../api');
 const request = require('request');
 const socket = require('socket.io');
-const apiKey = 'YOUR_KEY';
-const secret = 'YOUR_SECRET';
+const apiKey = API.key;
+const secret = API.secret;
 const Poloniex = require('poloniex-api-node');
 //construtor POLONIEX api
 const poloniex = new Poloniex(apiKey, secret, { nonce: () => new Date().getTime() * 1001 }, {socketTimeout: 60000});
