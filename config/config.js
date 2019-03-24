@@ -32,7 +32,7 @@ const lucro = ''; //porcentagem de lucro, caso esteja vazio o lucro esperado ser
 
 if(invest == false){
     console.log(
-        '\033c \x1b[4m \x1b[33m Bem Vindo ao RTbos 1.0.1 -> BRIBA \x1b[0m \n' +
+        '\033c \x1b[4m \x1b[33m Bem Vindo ao RTbos 1.0.5 -> BRIBA \x1b[0m \n' +
         'executando bot usando Valor do balanço total \n #-------------------------------------------- \n'+
         'caso não queira usar seu saldo total, pare o BOT e edite a variavel invest (Line: 29)\n'+
         '\n Analizando estratégias... \n#---------------------------------\n'+
