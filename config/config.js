@@ -205,21 +205,31 @@ if(invest == false){
                                     
                                     //executando ordem de venda
                                     if(resultRSI[7] > 70){
-                                        poloniex.sell(par, price, sell, 1, 1, 0, (err, sell) => {
+                                        if(balances.CLAM >= invest){
+                                           poloniex.sell(par, price, sell, 1, 1, 0, (err, sell) => {
                                             console.log(JSON.stringify(sell))
                                             console.log('executando venda:')
                                             console.log('venda no valor de: '+ price +'\n aguardando proxima ordem....')
                                         })
+                                           }else{
+                                            console.log('Ignorando a venda, Saldo insuficiente');
+                                            console.log('Saldo: '+ balances.CLAM + 'CLAM');
+                                           }
                                     }else{
                                         console.log('aguardando oportunidade para venda...\n#--------------------------')
                                     }
                                     //executando ordem de compra
                                     if(resultRSI[7] < 30){
-                                        poloniex.buy(par, price, buy, 1, 1, 0, (err, buy) => {
+                                        if(balances.BTC >= invest){
+                                       poloniex.buy(par, price, buy, 1, 1, 0, (err, buy) => {
                                             console.log(JSON.stringify(buy))
                                             console.log('executando compra:')
                                             console.log('compra no valor de: '+ price +'\n aguardando proxima ordem....')
                                         })
+                                           }else{
+                                           console.log('Ignorando a compra, Saldo insuficiente');
+                                            console.log('Saldo: '+ balances.BTC+' BTC');
+                                           }
                                     }else{
                                         console.log('aguardando oportunidade para compra...\n#--------------------------')
                                     }
