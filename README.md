@@ -29,8 +29,8 @@ execute a instalação
 
 edite o arquivo *api.json*
 ```json
- "key": "YOUR_KEY",
-	"secret": "YOUR_SECRET"
+"key": "YOUR_KEY",
+"secret": "YOUR_SECRET"
 ```
  > - versão briba:1.0.
   >- **NOTA**: a versão briba executa apenas ordens em um par de moedas, 
