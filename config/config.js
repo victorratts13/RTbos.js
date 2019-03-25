@@ -20,7 +20,7 @@ const reloadTime = '10000';//tempo para recarregar os dados (padrão 300 segundo
 setInterval(() => {
 
     //configurações gerais
-const par = 'BTC_CLAM'; //ultilise o formato PAIR_PAIR ex. BTC_LTC, BTC_DOGE, USDT_BTC
+const par = 'USDT_BTC'; //ultilise o formato PAIR_PAIR ex. BTC_LTC, BTC_DOGE, USDT_BTC
 const uTime = parseInt(new Date().getTime() / 1000);//TimeUnix format
 const sub = 4550;//subtração do startTime
 const period = 300; //valor do periodo dos candels em segundos (minimo 300 segundos ou 5 minutos)
@@ -106,13 +106,13 @@ if(invest == false){
                                     //calculando rsi baseado no mercado (periodo 5 = 300 segundos)
                                     var resultRSI = RSI.calculate(inputRSI)
                                     var price = dataCh[0].high;
-                                    var buy = balances.BTC / price;
-                                    var sell = price * balances.CLAM / price;
+                                    var buy = balances.USDT / price;
+                                    var sell = price * balances.BTC / price;
                                     console.log(resultRSI);
 
+                                    console.log('Balanço USDT -> '+ balances.USDT + '\n#--------------------------------')
                                     console.log('Balanço BTC -> '+ balances.BTC + '\n#--------------------------------')
-                                    console.log('Balanço CLAM -> '+ balances.CLAM + '\n#--------------------------------')
-                                    console.log('Preço BTC -> '+ price + '\n#--------------------------------')
+                                    console.log('Preço USDT -> '+ price + '\n#--------------------------------')
 
                                     /*
                                         formula de calculo RSI:
@@ -186,12 +186,12 @@ if(invest == false){
                                     var resultRSI = RSI.calculate(inputRSI)
                                     var price = dataCh[0].high;
                                     var buy = invest / price;
-                                    var sell = price * balances.CLAM / price;
+                                    var sell = price * balances.BTC / price;
                                     console.log(resultRSI);
 
+                                    console.log('Balanço USDT -> '+ balances.USDT + '\n#--------------------------------')
                                     console.log('Balanço BTC -> '+ balances.BTC + '\n#--------------------------------')
-                                    console.log('Balanço CLAM -> '+ balances.CLAM + '\n#--------------------------------')
-                                    console.log('Preço BTC -> '+ price + '\n#--------------------------------')
+                                    console.log('Preço USDT -> '+ price + '\n#--------------------------------')
 
                                     /*
                                         formula de calculo RSI:
@@ -205,7 +205,7 @@ if(invest == false){
                                     
                                     //executando ordem de venda
                                     if(resultRSI[7] > 70){
-                                        if(balances.CLAM >= invest){
+                                        if(balances.BTC >= invest){
                                            poloniex.sell(par, price, sell, 1, 1, 0, (err, sell) => {
                                             console.log(JSON.stringify(sell))
                                             console.log('executando venda:')
@@ -213,14 +213,14 @@ if(invest == false){
                                         })
                                            }else{
                                             console.log('Ignorando a venda, Saldo insuficiente');
-                                            console.log('Saldo: '+ balances.CLAM + 'CLAM');
+                                            console.log('Saldo: '+ balances.BTC + 'BTC');
                                            }
                                     }else{
                                         console.log('aguardando oportunidade para venda...\n#--------------------------')
                                     }
                                     //executando ordem de compra
                                     if(resultRSI[7] < 30){
-                                        if(balances.BTC >= invest){
+                                        if(balances.USDT >= invest){
                                        poloniex.buy(par, price, buy, 1, 1, 0, (err, buy) => {
                                             console.log(JSON.stringify(buy))
                                             console.log('executando compra:')
@@ -228,7 +228,7 @@ if(invest == false){
                                         })
                                            }else{
                                            console.log('Ignorando a compra, Saldo insuficiente');
-                                            console.log('Saldo: '+ balances.BTC+' BTC');
+                                            console.log('Saldo: '+ balances.USDT+' USDT');
                                            }
                                     }else{
                                         console.log('aguardando oportunidade para compra...\n#--------------------------')
