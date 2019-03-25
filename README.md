@@ -27,10 +27,10 @@ execute a instalação
 
 ## configuração
 
-edite o arquivo *config/config.js*
-```sh
-const apiKey = 'Api_secret';
-const secret = 'Api_key';
+edite o arquivo *api.json*
+```json
+ "key": "YOUR_KEY",
+	"secret": "YOUR_SECRET"
 ```
  > - versão briba:1.0.
   >- **NOTA**: a versão briba executa apenas ordens em um par de moedas, 
