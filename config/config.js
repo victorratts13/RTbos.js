@@ -27,8 +27,8 @@ const period = 300; //valor do periodo dos candels em segundos (minimo 300 segun
 const start = uTime - sub;//inicio do candle
 const end = uTime;//fim do candle
 
-const invest = ''; //valor a ser investido, caso esteja vazio o valor será seu saldo total - minimo 0.0001
-const lucro = ''; //porcentagem de lucro, caso esteja vazio o lucro esperado será maximo
+const invest = API.invest; //valor a ser investido, caso esteja vazio o valor será seu saldo total - minimo 0.0001
+const lucro = API.lucro; //porcentagem de lucro, caso esteja vazio o lucro esperado será maximo
 
 if(invest == false){
     console.log(
