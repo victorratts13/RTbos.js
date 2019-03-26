@@ -1,4 +1,6 @@
 {
 	"key": "YOUR_KEY",
-	"secret": "YOUR_SECRET"
+	"secret": "YOUR_SECRET",
+	"invest": "",
+	"lucro": ""
 }
