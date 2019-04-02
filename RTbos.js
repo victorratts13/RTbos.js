@@ -31,4 +31,4 @@ const conf = require('./config/config');
 
 //Todas as execuções e ordens são feitas
 //no arquivo config.js
-conf.est
+conf.start
