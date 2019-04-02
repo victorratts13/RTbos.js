@@ -1,6 +1,6 @@
 const conf = require('./config/config');
 
 
-conf.est
+conf.test
 //conf.config;
 //conf.get
