@@ -12,7 +12,8 @@
 - "poloniex-api-node": "^2.0.1",
 - "request": "^2.88.0",
 - "socket.io": "^2.2.0",
-- "technicalindicators": "^1.1.13"
+- "technicalindicators": "^1.1.13",
+- "bitcoin-chart-cli": "3.0"
 
 ## instalação
 
