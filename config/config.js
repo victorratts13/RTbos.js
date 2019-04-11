@@ -3,7 +3,7 @@ Desenvolvido e mantido por: Victor Ratts
 github: https://github.com/victorratts13/RTbos
 versão: estavel (1.0.2) Briba
 */
-const btc_chart = require('bitcoin-chart-cli');
+const chart = require('bitcoin-chart-cli');
 const API = require('../api');
 const request = require('request');
 const socket = require('socket.io');
@@ -49,7 +49,7 @@ if(invest == false){
         '\n Analizando estratégias... \n #---------------------------------'+
          `#--------------------------------------------------#\n|\x1b[32m dados Graficos Obtidos para o time de: \x1b[36m'${period}' \x1b[37m segundos \n| URI do par: ${par}\n#--------------------------------------------------#\n`+
          `#--------------------------------------------------#\n|Data completa: ${new Date()}\n#--------------------------------------------------#`+
-         '\ncalculando Indicadores'
+         '\ncalculando Indicadores'+chart
     )
 
 }
